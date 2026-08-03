@@ -1,0 +1,5 @@
+# build artifacts
+bin/opencode-bin
+*.so
+*.o
+*.swp

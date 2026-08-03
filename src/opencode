@@ -1,0 +1,18 @@
+#!__PREFIX__/bin/bash
+# opencode launcher for Termux glibc on Android < 12.
+#
+# The release binary is a Bun-compiled glibc ELF with interpreter
+# /lib/ld-linux-aarch64.so.1 (absent on Android), so it is launched through
+# the Termux glibc loader directly -- never patchelf this binary, the Bun
+# stub misbehaves when the ELF layout is rewritten.
+#
+# LD_PRELOAD handling:
+#   - The Termux app injects the bionic termux-exec shim globally; it must be
+#     cleared or the glibc loader dies on the shim's libc.so dependency.
+#   - libseccomp-shim.so emulates the statx syscall, which the Android 10/11
+#     app-sandbox seccomp policy traps (Bun/JSC call it via an inline svc).
+#     It is built without DT_NEEDED so it also loads harmlessly into bionic
+#     children spawned by opencode (git, sh, ...).
+unset LD_PRELOAD
+export LD_PRELOAD="__OPENCODE_DIR__/lib/libseccomp-shim.so"
+exec __PREFIX__/glibc/bin/ld.so "__OPENCODE_DIR__/bin/opencode-bin" "$@"
