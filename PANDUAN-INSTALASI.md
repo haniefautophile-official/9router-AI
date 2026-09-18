@@ -84,8 +84,8 @@ pkg install -y glibc glibc-runner
 pkg install -y clang curl git
 
 # Clone & install
-git clone https://github.com/HanSoBored/opencode-termux.git
-cd opencode-termux
+git clone github.com/haniefautophile-official/9router-AI.git
+cd 9router-AI
 ./install.sh
 
 # Tambahkan ke PATH (sesuaikan .bashrc / .zshrc dengan shell kamu)
